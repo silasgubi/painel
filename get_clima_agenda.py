@@ -1,7 +1,7 @@
 import os
 import requests
 import speedtest
-from datetime import datetime, timedelta
+from datetime import datetime
 import holidays
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
@@ -24,18 +24,15 @@ data_hoje = now.strftime("%d/%m/%Y")
 hora_hoje = now.strftime("%H:%M")
 dia_semana = now.strftime("%a.")
 
-# ID do seu Google Calendar
+# Seu ID de calendário (geralmente seu email)
 calendar_id = "silasgubi@gmail.com"
 
-# Biblioteca de feriados no Brasil, estado SP
+# Feriados - Brasil (estado SP)
 br_holidays = holidays.Brazil(prov='SP')
 feriado_hoje = br_holidays.get(now.date())
-
-# Verifica se HOJE é feriado
 if feriado_hoje:
     feriado_text = f"Hoje é feriado: {feriado_hoje}"
 else:
-    # Se não é feriado hoje, buscar o próximo feriado no ano
     proximos = sorted(d for d in br_holidays if d > now.date() and d.year == now.year)
     if proximos:
         proximo_feriado_data = proximos[0]
@@ -44,14 +41,13 @@ else:
     else:
         feriado_text = "Não há mais feriados este ano"
 
-# Clima em São Paulo + ícone + descrição PT + °C
+# Clima em São Paulo (em Celsius, com ícone, condição e temperatura, em Português)
 try:
-    # São Paulo: %c -> ícone, %C -> texto, %t -> temperatura (°C com &m)
     clima = requests.get("https://wttr.in/Sao+Paulo?format=São+Paulo:+%c+%C+%t&lang=pt&m").text
 except Exception:
     clima = "Clima indisponível"
 
-# Agenda do Google Calendar: eventos de hoje até 23h59
+# Agenda do Google Calendar (eventos de hoje até 23:59)
 time_min = now.isoformat() + 'Z'
 time_max = datetime(now.year, now.month, now.day, 23, 59, 59).isoformat() + 'Z'
 events_result = service.events().list(
@@ -61,9 +57,7 @@ events_result = service.events().list(
     singleEvents=True,
     orderBy='startTime'
 ).execute()
-
 events = events_result.get('items', [])
-
 if not events:
     agenda_text = "Compromissos: Nenhum"
 else:
@@ -76,7 +70,6 @@ else:
             event_time = start
         summary = event.get('summary', 'Sem título')
         agenda_lines.append(f"{event_time} - {summary}")
-    # Exibir com "Compromissos:" antes
     agenda_text = "Compromissos:<br>" + "<br>".join(agenda_lines)
 
 # Teste de velocidade da Internet
@@ -90,7 +83,7 @@ except Exception:
     internet_text = "Velocidade: Offline"
 
 # ====================================
-# 3. Gerar HTML - Layout Terminal + Ícones Locais
+# 3. Gerar HTML com Layout Flat, Dark (modo terminal) e Botões Separados
 # ====================================
 html_content = f"""<!DOCTYPE html>
 <html>
@@ -99,31 +92,52 @@ html_content = f"""<!DOCTYPE html>
   <title>Quarto</title>
   <style>
     body {{
+      margin: 0; 
       background-color: #000;
       color: #fff;
       font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      justify-content: center;
+    }}
+    .outer {{
+      border: 2px solid #444;
+      max-width: 700px;
+      width: 100%;
+      margin: 10px;
       padding: 10px;
+      box-sizing: border-box;
+      background: #111;
     }}
     header {{
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.9em;
-      padding: 5px 0;
+      margin-bottom: 5px;
+      border-bottom: 1px dashed #333;
+      padding-bottom: 5px;
     }}
-    .container {{
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
+    header .title {{
+      opacity: 0.9;
+      font-weight: bold;
+      font-size: 1em;
+    }}
+    header .dateinfo {{
+      opacity: 0.9;
+    }}
+    .section {{
+      border: 1px solid #333;
+      padding: 10px;
       margin-top: 10px;
     }}
-    h3 {{
-      border-top: 1px solid #222;
-      padding-top: 10px;
-      opacity: 0.7;
+    .section h3 {{
+      margin: 0 0 10px;
       text-transform: uppercase;
       font-size: 1em;
       letter-spacing: 1px;
+      border-bottom: 1px dashed #444;
+      padding-bottom: 5px;
+      opacity: 0.8;
     }}
     .grid {{
       display: flex;
@@ -131,8 +145,8 @@ html_content = f"""<!DOCTYPE html>
       gap: 10px;
     }}
     .btn {{
-      background: #111;
-      border: none;
+      background: #222;
+      border: 1px solid #444;
       border-radius: 5px;
       width: 60px;
       height: 60px;
@@ -144,27 +158,33 @@ html_content = f"""<!DOCTYPE html>
       transition: transform 0.1s, background 0.2s;
     }}
     .btn:hover {{
-      background: #222;
+      background: #333;
     }}
     .btn:active {{
       transform: scale(0.95);
     }}
-    /* Deixa ícones mais claros caso sejam pretos */
     .btn img {{
       width: 30px;
       height: 30px;
-      margin-bottom: 3px;
+      margin-bottom: 2px;
       filter: invert(100%) brightness(150%);
     }}
     .btn span {{
-      font-size: 0.6em;
-      opacity: 0.8;
+      font-size: 0.75em; 
+      color: #ccc; 
+      font-weight: bold;
+      margin-top: -3px;
     }}
     .info {{
-      background: #111;
+      background: #222;
+      border: 1px solid #444;
       padding: 10px;
       border-radius: 5px;
       margin-top: 10px;
+      font-size: 0.9em;
+    }}
+    .info p {{
+      margin: 5px 0;
     }}
   </style>
   <script>
@@ -173,117 +193,133 @@ html_content = f"""<!DOCTYPE html>
       xhr.open("GET", url, true);
       xhr.send();
     }}
-
     function atualizarDataHora() {{
       var now = new Date();
       var options = {{ weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }};
-      document.querySelector('header div:nth-child(2)').innerText = now.toLocaleDateString('pt-BR', options);
+      document.querySelector('.dateinfo').innerText = now.toLocaleDateString('pt-BR', options);
     }}
     setInterval(atualizarDataHora, 60000);
-    atualizarDataHora();
+    window.onload = atualizarDataHora;
   </script>
 </head>
 <body>
-<header>
-    <div style="opacity:0.7;">Quarto</div>
-    <div style="opacity:0.7;">{dia_semana} {data_hoje}, {hora_hoje}</div>
-</header>
+<div class="outer">
+  <header>
+    <div class="title">Quarto</div>
+    <div class="dateinfo">{dia_semana} {data_hoje}, {hora_hoje}</div>
+  </header>
 
-<div class="container">
-    <!-- Seção de Luzes -->
+  <!-- SEÇÃO LUZES -->
+  <div class="section">
     <h3>Luzes</h3>
     <div class="grid">
       <!-- Luz do Quarto -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/luz_on.svg" alt="Luz Quarto">
-         <span>Quarto</span>
+        <img src="assets/icones/luz_on.svg" alt="Luz On">
+        <span>Quarto</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/luz_off.svg" alt="Luz Quarto">
-         <span>Quarto</span>
+        <img src="assets/icones/luz_off.svg" alt="Luz Off">
+        <span>Quarto</span>
       </button>
 
       <!-- Abajur 1 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
-         <span>Abajur</span>
+        <img src="assets/icones/abajur_on.svg" alt="Abajur On">
+        <span>Abajur1</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/abajur_off.svg" alt="Abajur 1">
-         <span>Abajur</span>
+        <img src="assets/icones/abajur_off.svg" alt="Abajur Off">
+        <span>Abajur1</span>
       </button>
 
       <!-- Abajur 2 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/abajur_on.svg" alt="Abajur 2">
-         <span>Abajur</span>
+        <img src="assets/icones/abajur_on.svg" alt="Abajur On">
+        <span>Abajur2</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/abajur_off.svg" alt="Abajur 2">
-         <span>Abajur</span>
+        <img src="assets/icones/abajur_off.svg" alt="Abajur Off">
+        <span>Abajur2</span>
       </button>
 
       <!-- Luz da Cama -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/cama_on.svg" alt="Cama">
-         <span>Cama</span>
+        <img src="assets/icones/cama_on.svg" alt="Cama On">
+        <span>Cama</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/cama_off.svg" alt="Cama">
-         <span>Cama</span>
+        <img src="assets/icones/cama_off.svg" alt="Cama Off">
+        <span>Cama</span>
       </button>
     </div>
+  </div>
 
-    <!-- Seção de Dispositivos -->
+  <!-- SEÇÃO DISPOSITIVOS -->
+  <div class="section">
     <h3>Dispositivos</h3>
     <div class="grid">
       <!-- Ar-condicionado -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/ar_on.svg" alt="Ar">
-         <span>Ar</span>
+        <img src="assets/icones/ar_on.svg" alt="Ar On">
+        <span>Ar</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/ar_off.svg" alt="Ar">
-         <span>Ar</span>
+        <img src="assets/icones/ar_off.svg" alt="Ar Off">
+        <span>Ar</span>
       </button>
 
       <!-- Projetor -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/projetor_on.svg" alt="Projetor">
-         <span>Projetor</span>
+        <img src="assets/icones/projetor_on.svg" alt="Projetor On">
+        <span>Proj</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/projetor_off.svg" alt="Projetor">
-         <span>Projetor</span>
+        <img src="assets/icones/projetor_off.svg" alt="Projetor Off">
+        <span>Proj</span>
       </button>
 
       <!-- Tomada iPad -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/usb_on.svg" alt="iPad">
-         <span>iPad</span>
+        <img src="assets/icones/usb_on.svg" alt="iPad On">
+        <span>iPad</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/usb_off.svg" alt="iPad">
-         <span>iPad</span>
+        <img src="assets/icones/usb_off.svg" alt="iPad Off">
+        <span>iPad</span>
       </button>
     </div>
+  </div>
 
-    <!-- Seção de Cenas -->
+  <!-- SEÇÃO CENAS -->
+  <div class="section">
     <h3>Cenas</h3>
     <div class="grid">
       <!-- Cena Luzes Vermelhas -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/luzes_vermelhas_on.svg" alt="Vermelhas">
-         <span>Vermelhas</span>
+        <img src="assets/icones/luzes_vermelhas_on.svg" alt="Vermelhas">
+        <span>Vermelhas</span>
       </button>
       <!-- Cena Luzes Grafite -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/grafite_on.svg" alt="Grafite">
-         <span>Grafite</span>
+        <img src="assets/icones/grafite_on.svg" alt="Grafite">
+        <span>Grafite</span>
+      </button>
+      <!-- Cena Aconchegante -->
+      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <img src="assets/icones/calmo_on.svg" alt="Aconchegante">
+        <span>Aconchegante</span>
+      </button>
+      <!-- Cena Luzes Vermelhas Banheiro -->
+      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <img src="assets/icones/banheiro_on.svg" alt="Banheiro">
+        <span>Banheiro</span>
       </button>
     </div>
+  </div>
 
-    <!-- Seção de Sistema -->
+  <!-- SEÇÃO SISTEMA -->
+  <div class="section">
     <h3>Sistema</h3>
     <div class="info">
       <p>{clima}</p>
@@ -291,13 +327,11 @@ html_content = f"""<!DOCTYPE html>
       <p>{internet_text}</p>
       <p>{feriado_text}</p>
     </div>
+  </div>
 </div>
 </body>
 </html>
 """
 
-# ====================================
-# 4. Salvar o HTML
-# ====================================
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
