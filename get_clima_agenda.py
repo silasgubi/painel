@@ -7,40 +7,40 @@ import holidays
 from google.oauth2.service_account import Credentials
 from googleapiclient.discovery import build
 
-# ===========================
+# ====================================
 # 1. Configuração do Google Calendar via Service Account
-# ---------------------------
+# ====================================
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-# Cria o arquivo service_account.json com o conteúdo do segredo (já definido no GitHub Secrets)
+# Cria o arquivo service_account.json com o conteúdo do segredo
 credentials_json = os.environ['GOOGLE_CREDENTIALS']
 with open('service_account.json', 'w', encoding='utf-8') as f:
     f.write(credentials_json)
 creds = Credentials.from_service_account_file('service_account.json', scopes=SCOPES)
 service = build('calendar', 'v3', credentials=creds)
 
-# ===========================
-# 2. Dados dinâmicos: data, feriado, clima, agenda, e internet
-# ---------------------------
+# ====================================
+# 2. Dados Dinâmicos
+# ====================================
 now = datetime.now()
 data_hoje = now.strftime("%d/%m/%Y")
 hora_hoje = now.strftime("%H:%M")
 dia_semana = now.strftime("%A")
 
-# Feriados (Brasil com província SP)
+# Determine estado toggle baseado na hora: se par "ligar", se ímpar "desligar"
+toggle_state = "ligar" if now.hour % 2 == 0 else "desligar"
+
+# Feriados (Brasil, província SP)
 br_holidays = holidays.Brazil(prov='SP')
 feriado = br_holidays.get(now.date())
-if feriado:
-    feriado_text = f"Feriado: {feriado}"
-else:
-    feriado_text = "Sem feriado"
+feriado_text = f"Feriado: {feriado}" if feriado else "Sem feriado"
 
-# Clima: usando wttr.in (em formato simples)
+# Clima via wttr.in (formato simples)
 try:
     clima = requests.get('https://wttr.in/Sao+Paulo?format=3').text
-except Exception as e:
+except Exception:
     clima = "Clima indisponível"
 
-# Agenda: eventos do Google Calendar para hoje (até o final do dia)
+# Agenda do Google Calendar (eventos de hoje até o final do dia)
 time_min = now.isoformat() + 'Z'
 end_of_day = datetime(now.year, now.month, now.day, 23, 59, 59)
 time_max = end_of_day.isoformat() + 'Z'
@@ -70,12 +70,29 @@ try:
     down = int(st.download() / 1_000_000)
     up = int(st.upload() / 1_000_000)
     internet_text = f"Velocidade: {down} ↓ / {up} ↑"
-except Exception as e:
+except Exception:
     internet_text = "Velocidade: Offline"
 
-# ===========================
-# 3. Template HTML do Painel com Layout Flat, Dark e Botões em Seções
-# ---------------------------
+# ====================================
+# 3. Gerar HTML com Layout Flat, Dark (modo terminal) e Botões Toggle
+# ====================================
+# Para os botões toggle, aplicamos o toggle_state para os dispositivos que alternam:
+# - Luz do Quarto: {toggle_state}_luz_quarto
+# - Abajur 1: {toggle_state}_abajur_1 ou (se for desligar, usamos "desligar_abajar_1" conforme a nomenclatura original)
+# - Abajur 2: {toggle_state}_abajur_2 (ou "desligar_abajar_2")
+# - Luz da Cama: {toggle_state}_luz_cama
+# - Ar-condicionado: {toggle_state}_ar
+# - Tomada iPad: {toggle_state}_tomada_ipad
+# - Projetor: {toggle_state}_projetor
+#
+# Os botões de cena serão fixos (não toggle):
+# - Cena Luzes Vermelhas: "cena_luzes_vermelhas"
+# - Cena Luzes Grafite: "cena_luzes_grafite"
+# - Cena Aconchegante: "cena_aconchegante"
+# - Cena Luzes Vermelhas Banheiro: "cena_luzes_vermelhas_banheiro"
+#
+# Note: Para os abajures, a nomenclatura de "desligar" segue "desligar_abajar_1" e "desligar_abajar_2" conforme enviado anteriormente.
+
 html_content = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -129,26 +146,34 @@ html_content = f"""<!DOCTYPE html>
       gap: 10px;
       flex-wrap: wrap;
     }}
-    button {{
+    .btn {{
       background: #111;
       border: none;
       color: #fff;
-      padding: 15px;
-      font-size: 1.5em;
-      border-radius: 50%;
+      padding: 10px;
+      font-size: 1.2em;
+      border-radius: 5px;
       width: 60px;
       height: 60px;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       transition: transform 0.1s, background-color 0.2s;
     }}
-    button:hover {{
+    .btn:hover {{
       background: #222;
     }}
-    button:active {{
+    .btn:active {{
       transform: scale(0.95);
+    }}
+    .btn i {{
+      margin-bottom: 5px;
+    }}
+    .btn span {{
+      font-size: 0.6em;
+      opacity: 0.8;
     }}
     .info-card {{
       background: #111;
@@ -172,32 +197,24 @@ html_content = f"""<!DOCTYPE html>
       <h3>Luzes</h3>
       <div class="button-row">
         <!-- Luz do Quarto -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + '{toggle_state}_luz_quarto' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-lightbulb"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-lightbulb"></i>
+          <span>Luz Quarto</span>
         </button>
         <!-- Abajur 1 -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( '{toggle_state}'=='ligar' ? 'ligar_abajur_1' : 'desligar_abajar_1' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-bed"></i>
+          <span>Abajur 1</span>
         </button>
         <!-- Abajur 2 -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( '{toggle_state}'=='ligar' ? 'ligar_abajur_2' : 'desligar_abajar_2' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-bed"></i>
+          <span>Abajur 2</span>
         </button>
         <!-- Luz da Cama -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + '{toggle_state}_luz_cama' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-lightbulb"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-lightbulb"></i>
+          <span>Luz Cama</span>
         </button>
       </div>
     </div>
@@ -206,26 +223,20 @@ html_content = f"""<!DOCTYPE html>
     <div class="section" id="dispositivos">
       <h3>Dispositivos</h3>
       <div class="button-row">
-        <!-- Tomada iPad -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-plug"></i>
+        <!-- Ar-condicionado -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + '{toggle_state}_ar' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-snowflake"></i>
+          <span>Ar</span>
         </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-plug"></i>
+        <!-- Tomada iPad -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + '{toggle_state}_tomada_ipad' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-plug"></i>
+          <span>iPad</span>
         </button>
         <!-- Projetor -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + '{toggle_state}_projetor' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-video"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-video"></i>
-        </button>
-        <!-- Ar-condicionado -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-snowflake"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-snowflake"></i>
+          <span>Projetor</span>
         </button>
       </div>
     </div>
@@ -235,20 +246,24 @@ html_content = f"""<!DOCTYPE html>
       <h3>Cenas</h3>
       <div class="button-row">
         <!-- Cena Luzes Vermelhas -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-heart"></i>
+          <span>Vermelhas</span>
         </button>
         <!-- Cena Luzes Grafite -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-square"></i>
+          <span>Grafite</span>
         </button>
         <!-- Cena Aconchegante -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-home"></i>
+          <span>Aconchegante</span>
         </button>
         <!-- Cena Luzes Vermelhas Banheiro -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bath"></i>
+          <span>Banheiro</span>
         </button>
       </div>
     </div>
@@ -266,11 +281,14 @@ html_content = f"""<!DOCTYPE html>
   </div>
 
   <script>
+    // Função para chamar os IFTTT webhooks
     function chamarIFTTT(url) {{
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, true);
       xhr.send();
     }}
+
+    // Atualizar data e hora no header
     function atualizarDataHora() {{
       var now = new Date();
       var options = {{ weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }};
@@ -283,8 +301,8 @@ html_content = f"""<!DOCTYPE html>
 </html>
 """
 
-# ===========================
+# ====================================
 # 4. Salvar o HTML no arquivo index.html
-# ---------------------------
+# ====================================
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
