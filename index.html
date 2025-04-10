@@ -1,226 +1,39 @@
+
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <title>Quarto</title>
-  <!-- Importa FontAwesome para os ícones -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <style>
-    * {
-      box-sizing: border-box;
-    }
-    body {
-      background-color: #000;
-      color: #fff;
-      margin: 0;
-      padding: 10px;
-      font-family: 'Courier New', Courier, monospace;
-    }
-    /* Header discreto */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.9em;
-      padding: 5px 0;
-    }
-    header .title {
-      opacity: 0.7;
-    }
-    header .datetime {
-      opacity: 0.8;
-    }
-    /* Container principal */
-    .container {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      margin-top: 10px;
-    }
-    /* Estilo das seções */
-    .section {
-      border-top: 1px solid #222;
-      padding-top: 10px;
-    }
-    .section h3 {
-      font-size: 1em;
-      margin: 5px 0 10px;
-      text-transform: uppercase;
-      opacity: 0.7;
-      letter-spacing: 1px;
-    }
-    /* Container dos botões da seção */
-    .button-row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-    button {
-      background: #111;
-      border: none;
-      color: #fff;
-      padding: 15px;
-      font-size: 1.5em;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      transition: transform 0.1s, background-color 0.2s;
-    }
-    button:hover {
-      background: #222;
-    }
-    button:active {
-      transform: scale(0.95);
-    }
-    /* Cartão de informações do sistema */
-    .info-card {
-      background: #111;
-      padding: 10px;
-      border-radius: 5px;
-      font-size: 0.9em;
-    }
-    .info-card p {
-      margin: 5px 0;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <title>Quarto</title>
+    <style>
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 3em;
+        }
+        h2 {
+            font-size: 2em;
+        }
+        .card {
+            background: #111;
+            padding: 15px;
+            margin: 10px auto;
+            border-radius: 10px;
+            width: 300px;
+        }
+    </style>
 </head>
 <body>
-  <!-- Header discreto -->
-  <header>
-    <div class="title">Quarto</div>
-    <div class="datetime" id="datetime"></div>
-  </header>
-
-  <div class="container">
-    <!-- Seção de Luzes -->
-    <div class="section" id="luzes">
-      <h3>Luzes</h3>
-      <div class="button-row">
-        <!-- Luz do Quarto -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-lightbulb"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-lightbulb"></i>
-        </button>
-        <!-- Abajur 1 -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-bed"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajar_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-bed"></i>
-        </button>
-        <!-- Abajur 2 -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-bed"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajar_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-bed"></i>
-        </button>
-        <!-- Luz da Cama -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-lightbulb"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-lightbulb"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Seção de Dispositivos -->
-    <div class="section" id="dispositivos">
-      <h3>Dispositivos</h3>
-      <div class="button-row">
-        <!-- Tomada iPad -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-plug"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-plug"></i>
-        </button>
-        <!-- Projetor -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-video"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-video"></i>
-        </button>
-        <!-- Ar-condicionado -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-snowflake"></i>
-        </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="far fa-snowflake"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Seção de Cenas -->
-    <div class="section" id="cenas">
-      <h3>Cenas</h3>
-      <div class="button-row">
-        <!-- Cena Luzes Vermelhas -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-heart"></i>
-        </button>
-        <!-- Cena Luzes Grafite -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-square"></i>
-        </button>
-        <!-- Cena Aconchegante -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-home"></i>
-        </button>
-        <!-- Cena Luzes Vermelhas Banheiro -->
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-          <i class="fas fa-bath"></i>
-        </button>
-      </div>
-    </div>
-
-    <!-- Seção de Sistema (clima, agenda, internet) -->
-    <div class="section" id="sistema">
-      <h3>Sistema</h3>
-      <div class="info-card" id="infoCard">
-        <!-- As informações serão atualizadas via JavaScript -->
-        <p id="infoClima"></p>
-        <p id="infoAgenda"></p>
-        <p id="infoInternet"></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- Função para chamar os IFTTT webhooks -->
-  <script>
-    function chamarIFTTT(url) {
-      var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
-      xhr.send();
-    }
-
-    // Atualiza a data e hora no header
-    function atualizarDataHora() {
-      var now = new Date();
-      var options = { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-      document.getElementById('datetime').innerText = now.toLocaleDateString('pt-BR', options);
-    }
-    atualizarDataHora();
-    setInterval(atualizarDataHora, 60000); // Atualiza a cada 1 minuto
-
-    // Função para buscar as informações do sistema via API (exemplo fixo aqui)
-    function atualizarSistema() {
-      // Exemplos: você pode substituir por chamadas reais se tiver endpoints
-      document.getElementById('infoClima').innerText = "Clima: 23°C - ☁️";
-      document.getElementById('infoAgenda').innerHTML = "Agenda: Nenhum compromisso";
-      document.getElementById('infoInternet').innerText = "Velocidade: 50 ↓ / 10 ↑";
-    }
-    atualizarSistema();
-    // Atualiza as informações do sistema a cada 5 minutos (exemplo)
-    setInterval(atualizarSistema, 300000);
-  </script>
+    <h1>03:45:00</h1>
+    <h2>Thursday, 10/04/2025</h2>
+    <div class="card">Sao+Paulo: ⛅️  +20°C
+</div>
+    <div class="card"></div>
+    <div class="card"><b>Agenda:</b><br>Nenhum compromisso</div>
+    <div class="card">Velocidade: 2003 ↓ / 1754 ↑</div>
 </body>
 </html>
