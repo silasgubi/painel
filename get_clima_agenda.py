@@ -182,14 +182,14 @@ html_content = f"""<!DOCTYPE html>
         <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
         </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajar_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="far fa-bed"></i>
         </button>
         <!-- Abajur 2 -->
         <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
         </button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajar_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="far fa-bed"></i>
         </button>
         <!-- Luz da Cama -->
