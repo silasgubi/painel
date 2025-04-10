@@ -25,7 +25,7 @@ data_hoje = now.strftime("%d/%m/%Y")
 hora_hoje = now.strftime("%H:%M")
 dia_semana = now.strftime("%a.")
 
-# Use seu ID do Google Calendar (geralmente seu email) 
+# Use o seu ID do Google Calendar (geralmente seu email)
 calendar_id = "silasgubi@gmail.com"
 
 # Feriados (Brasil, província SP)
@@ -33,9 +33,10 @@ br_holidays = holidays.Brazil(prov='SP')
 feriado = br_holidays.get(now.date())
 feriado_text = f"Feriado: {feriado}" if feriado else "Sem feriado"
 
-# Clima em São Paulo (em Celsius)
+# Clima em São Paulo (em Celsius, com ícone e texto em Português)
 try:
-    clima = requests.get('https://wttr.in/Sao+Paulo?format=%C+%t&m').text
+    # %C: ícone, %t: temperatura
+    clima = requests.get('https://wttr.in/Sao+Paulo?format=%C+%t&lang=pt&m').text
 except Exception:
     clima = "Clima indisponível"
 
@@ -75,14 +76,13 @@ except Exception:
 # ====================================
 # 3. Gerar HTML com Layout Flat, Dark (modo terminal) e Botões Separados
 # ====================================
-# Para cada dispositivo, há dois botões: um para ligar e outro para desligar.
-# Os links foram atualizados com sua IFTTT key.
+# Cada dispositivo terá dois botões: um para ligar e outro para desligar.
+# Os links utilizam sua IFTTT key "dyC3gXsJqHMp5uYOPt-s2W" e os ícones serão carregados de "assets/icones/"
 html_content = f"""<!DOCTYPE html>
 <html>
 <head>
   <meta charset="UTF-8">
   <title>Quarto</title>
-  <!-- Ícones locais serão carregados a partir da pasta assets/icones/ -->
   <style>
     body {{
       background-color: #000;
@@ -170,38 +170,38 @@ html_content = f"""<!DOCTYPE html>
     <div class="grid">
       <!-- Luz do Quarto -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Luz Quarto">
+         <img src="assets/icones/luz_on.svg" alt="Luz Quarto">
          <span>Quarto</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Luz Quarto">
+         <img src="assets/icones/luz_off.svg" alt="Luz Quarto">
          <span>Quarto</span>
       </button>
       <!-- Abajur 1 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Abajur 1">
+         <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
          <span>Abajur</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Abajur 1">
+         <img src="assets/icones/abajur_off.svg" alt="Abajur 1">
          <span>Abajur</span>
       </button>
       <!-- Abajur 2 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Abajur 2">
+         <img src="assets/icones/abajur_on.svg" alt="Abajur 2">
          <span>Abajur</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Abajur 2">
+         <img src="assets/icones/abajur_off.svg" alt="Abajur 2">
          <span>Abajur</span>
       </button>
       <!-- Luz da Cama -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Cama">
+         <img src="assets/icones/cama_on.svg" alt="Cama">
          <span>Cama</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Cama">
+         <img src="assets/icones/cama_off.svg" alt="Cama">
          <span>Cama</span>
       </button>
     </div>
@@ -210,29 +210,29 @@ html_content = f"""<!DOCTYPE html>
     <div class="grid">
       <!-- Ar-condicionado -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Ar">
+         <img src="assets/icones/ar_on.svg" alt="Ar">
          <span>Ar</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Ar">
+         <img src="assets/icones/ar_off.svg" alt="Ar">
          <span>Ar</span>
       </button>
       <!-- Projetor -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Projetor">
+         <img src="assets/icones/projetor_on.svg" alt="Projetor">
          <span>Projetor</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Projetor">
+         <img src="assets/icones/projetor_off.svg" alt="Projetor">
          <span>Projetor</span>
       </button>
       <!-- Tomada iPad -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="iPad">
+         <img src="assets/icones/usb_on.svg" alt="iPad">
          <span>iPad</span>
       </button>
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="iPad">
+         <img src="assets/icones/usb_off.svg" alt="iPad">
          <span>iPad</span>
       </button>
     </div>
@@ -241,12 +241,12 @@ html_content = f"""<!DOCTYPE html>
     <div class="grid">
       <!-- Cena Luzes Vermelhas -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Vermelhas">
+         <img src="assets/icones/luzes_vermelhas_on.svg" alt="Vermelhas">
          <span>Vermelhas</span>
       </button>
       <!-- Cena Luzes Grafite -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-         <img src="assets/icones/XXX.svg" alt="Grafite">
+         <img src="assets/icones/grafite_on.svg" alt="Grafite">
          <span>Grafite</span>
       </button>
     </div>
