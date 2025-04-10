@@ -232,3 +232,86 @@ html_content = f"""<!DOCTYPE html>
         <!-- Tomada iPad -->
         <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-plug"></i>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-plug"></i>
+          <span>Desliga</span>
+        </button>
+        <!-- Projetor -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-video"></i>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-video"></i>
+          <span>Desliga</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Seção de Cenas -->
+    <div class="section" id="cenas">
+      <h3>Cenas</h3>
+      <div class="button-row">
+        <!-- Cena Luzes Vermelhas -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-heart"></i>
+          <span>Vermelhas</span>
+        </button>
+        <!-- Cena Luzes Grafite -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-square"></i>
+          <span>Grafite</span>
+        </button>
+        <!-- Cena Aconchegante -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-home"></i>
+          <span>Aconchegante</span>
+        </button>
+        <!-- Cena Luzes Vermelhas Banheiro -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="fas fa-bath"></i>
+          <span>Banheiro</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Seção de Sistema -->
+    <div class="section" id="sistema">
+      <h3>Sistema</h3>
+      <div class="info-card" id="infoCard">
+        <p id="infoClima">{clima}</p>
+        <p id="infoAgenda">{agenda_text}</p>
+        <p id="infoInternet">{internet_text}</p>
+        <p id="infoFeriado">{feriado_text}</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Função para chamar os IFTTT webhooks
+    function chamarIFTTT(url) {{
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", url, true);
+      xhr.send();
+    }}
+
+    // Atualiza a data e hora no header a cada minuto
+    function atualizarDataHora() {{
+      var now = new Date();
+      var options = {{ weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }};
+      document.getElementById('datetime').innerText = now.toLocaleDateString('pt-BR', options);
+    }}
+    atualizarDataHora();
+    setInterval(atualizarDataHora, 60000);
+  </script>
+</body>
+</html>
+"""
+
+# ====================================
+# 4. Salvar o HTML no arquivo index.html
+# ====================================
+with open('index.html', 'w', encoding='utf-8') as f:
+    f.write(html_content)
