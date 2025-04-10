@@ -94,32 +94,48 @@
 <body>
   <header>
     <div class="title">Quarto</div>
-    <div class="datetime" id="datetime">Thursday, 10/04/2025 05:25</div>
+    <div class="datetime" id="datetime">Thursday, 10/04/2025 12:19</div>
   </header>
   <div class="container">
     <!-- Seção de Luzes -->
     <div class="section" id="luzes">
       <h3>Luzes</h3>
       <div class="button-row">
-        <!-- Luz do Quarto -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + 'desligar_luz_quarto' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <!-- Luz do Quarto: ligar e desligar -->
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-lightbulb"></i>
-          <span>Luz Quarto</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-lightbulb"></i>
+          <span>Desliga</span>
         </button>
         <!-- Abajur 1 -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( 'desligar'=='ligar' ? 'ligar_abajur_1' : 'desligar_abajur_1' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
-          <span>Abajur 1</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-bed"></i>
+          <span>Desliga</span>
         </button>
         <!-- Abajur 2 -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( 'desligar'=='ligar' ? 'ligar_abajur_2' : 'desligar_abajur_2' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
-          <span>Abajur 2</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-bed"></i>
+          <span>Desliga</span>
         </button>
         <!-- Luz da Cama -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + 'desligar_luz_cama' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-lightbulb"></i>
-          <span>Luz Cama</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-lightbulb"></i>
+          <span>Desliga</span>
         </button>
       </div>
     </div>
@@ -129,19 +145,31 @@
       <h3>Dispositivos</h3>
       <div class="button-row">
         <!-- Ar-condicionado -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + 'desligar_ar' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-snowflake"></i>
-          <span>Ar</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-snowflake"></i>
+          <span>Desliga</span>
         </button>
         <!-- Tomada iPad -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + 'desligar_tomada_ipad' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-plug"></i>
-          <span>iPad</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-plug"></i>
+          <span>Desliga</span>
         </button>
         <!-- Projetor -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + 'desligar_projetor' + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-video"></i>
-          <span>Projetor</span>
+          <span>Liga</span>
+        </button>
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+          <i class="far fa-video"></i>
+          <span>Desliga</span>
         </button>
       </div>
     </div>
@@ -180,7 +208,7 @@
         <p id="infoClima">Sao+Paulo: ⛅️  +69°F
 </p>
         <p id="infoAgenda">Nenhum compromisso</p>
-        <p id="infoInternet">Velocidade: 612 ↓ / 1387 ↑</p>
+        <p id="infoInternet">Velocidade: 2003 ↓ / 1768 ↑</p>
         <p id="infoFeriado">Sem feriado</p>
       </div>
     </div>
