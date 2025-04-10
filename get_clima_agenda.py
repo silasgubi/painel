@@ -8,6 +8,13 @@ from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 import os
 
+# Pega o conteúdo do segredo do GitHub
+credentials_json = os.environ.get('GOOGLE_CREDENTIALS')
+
+# Cria o arquivo credentials.json
+with open('credentials.json', 'w') as f:
+    f.write(credentials_json)
+
 # Google Calendar API - credenciais do secret
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
 
