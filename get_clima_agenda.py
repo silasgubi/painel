@@ -32,7 +32,7 @@ feriado_text = f"Feriado: {feriado}" if feriado else "Sem feriado"
 
 # Clima (usando wttr.in em formato simples)
 try:
-    clima = requests.get('https://wttr.in/Sao+Paulo?format=3').text
+    clima = requests.get('https://wttr.in/Sao+Paulo?format=3&m').text
 except Exception:
     clima = "Clima indisponível"
 
