@@ -55,10 +55,12 @@
     .btn:active {
       transform: scale(0.95);
     }
+    /* Deixa ícones mais claros caso sejam pretos */
     .btn img {
       width: 30px;
       height: 30px;
       margin-bottom: 3px;
+      filter: invert(100%) brightness(150%);
     }
     .btn span {
       font-size: 0.6em;
@@ -77,13 +79,22 @@
       xhr.open("GET", url, true);
       xhr.send();
     }
+
+    function atualizarDataHora() {
+      var now = new Date();
+      var options = { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+      document.querySelector('header div:nth-child(2)').innerText = now.toLocaleDateString('pt-BR', options);
+    }
+    setInterval(atualizarDataHora, 60000);
+    atualizarDataHora();
   </script>
 </head>
 <body>
 <header>
     <div style="opacity:0.7;">Quarto</div>
-    <div style="opacity:0.7;">Thu. 10/04/2025, 19:28</div>
+    <div style="opacity:0.7;">Thu. 10/04/2025, 19:44</div>
 </header>
+
 <div class="container">
     <!-- Seção de Luzes -->
     <h3>Luzes</h3>
@@ -97,6 +108,7 @@
          <img src="assets/icones/luz_off.svg" alt="Luz Quarto">
          <span>Quarto</span>
       </button>
+
       <!-- Abajur 1 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
@@ -106,6 +118,7 @@
          <img src="assets/icones/abajur_off.svg" alt="Abajur 1">
          <span>Abajur</span>
       </button>
+
       <!-- Abajur 2 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/abajur_on.svg" alt="Abajur 2">
@@ -115,6 +128,7 @@
          <img src="assets/icones/abajur_off.svg" alt="Abajur 2">
          <span>Abajur</span>
       </button>
+
       <!-- Luz da Cama -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/cama_on.svg" alt="Cama">
@@ -125,6 +139,7 @@
          <span>Cama</span>
       </button>
     </div>
+
     <!-- Seção de Dispositivos -->
     <h3>Dispositivos</h3>
     <div class="grid">
@@ -137,6 +152,7 @@
          <img src="assets/icones/ar_off.svg" alt="Ar">
          <span>Ar</span>
       </button>
+
       <!-- Projetor -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/projetor_on.svg" alt="Projetor">
@@ -146,6 +162,7 @@
          <img src="assets/icones/projetor_off.svg" alt="Projetor">
          <span>Projetor</span>
       </button>
+
       <!-- Tomada iPad -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/usb_on.svg" alt="iPad">
@@ -156,6 +173,7 @@
          <span>iPad</span>
       </button>
     </div>
+
     <!-- Seção de Cenas -->
     <h3>Cenas</h3>
     <div class="grid">
@@ -170,28 +188,15 @@
          <span>Grafite</span>
       </button>
     </div>
+
     <!-- Seção de Sistema -->
     <h3>Sistema</h3>
     <div class="info">
-      <p>Parcialmente nublado +24°C</p>
-      <p>17:00 - Reunião Arquiteto Luciano Basso</p>
-      <p>Velocidade: 1944 ↓ / 1737 ↑</p>
-      <p>Sem feriado</p>
+      <p>São Paulo: ⛅️  Parcialmente nublado +24°C</p>
+      <p>Compromissos:<br>17:00 - Reunião Arquiteto Luciano Basso</p>
+      <p>Velocidade: 1989 ↓ / 1807 ↑</p>
+      <p>Próximo feriado: Sexta-feira Santa em 18/04/2025</p>
     </div>
 </div>
-<script>
-function atualizarDataHora() {
-    var now = new Date();
-    var options = { weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-    document.querySelector('header div:nth-child(2)').innerText = now.toLocaleDateString('pt-BR', options);
-}
-atualizarDataHora();
-setInterval(atualizarDataHora, 60000);
-function chamarIFTTT(url) {
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.send();
-}
-</script>
 </body>
 </html>
