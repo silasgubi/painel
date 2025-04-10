@@ -76,22 +76,15 @@ except Exception:
 # ====================================
 # 3. Gerar HTML com Layout Flat, Dark (modo terminal) e Botões Toggle
 # ====================================
-# Para os botões toggle, aplicamos o toggle_state para os dispositivos que alternam:
+# Os botões toggle utilizam:
 # - Luz do Quarto: {toggle_state}_luz_quarto
-# - Abajur 1: {toggle_state}_abajur_1 ou (se for desligar, usamos "desligar_abajar_1" conforme a nomenclatura original)
-# - Abajur 2: {toggle_state}_abajur_2 (ou "desligar_abajar_2")
+# - Abajur 1: se toggle_state == "ligar", usa "ligar_abajur_1", senão "desligar_abajur_1"
+# - Abajur 2: se toggle_state == "ligar", usa "ligar_abajur_2", senão "desligar_abajur_2"
 # - Luz da Cama: {toggle_state}_luz_cama
 # - Ar-condicionado: {toggle_state}_ar
 # - Tomada iPad: {toggle_state}_tomada_ipad
 # - Projetor: {toggle_state}_projetor
-#
-# Os botões de cena serão fixos (não toggle):
-# - Cena Luzes Vermelhas: "cena_luzes_vermelhas"
-# - Cena Luzes Grafite: "cena_luzes_grafite"
-# - Cena Aconchegante: "cena_aconchegante"
-# - Cena Luzes Vermelhas Banheiro: "cena_luzes_vermelhas_banheiro"
-#
-# Note: Para os abajures, a nomenclatura de "desligar" segue "desligar_abajar_1" e "desligar_abajar_2" conforme enviado anteriormente.
+# As cenas permanecem fixas.
 
 html_content = f"""<!DOCTYPE html>
 <html>
@@ -202,12 +195,12 @@ html_content = f"""<!DOCTYPE html>
           <span>Luz Quarto</span>
         </button>
         <!-- Abajur 1 -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( '{toggle_state}'=='ligar' ? 'ligar_abajur_1' : 'desligar_abajar_1' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( '{toggle_state}'=='ligar' ? 'ligar_abajur_1' : 'desligar_abajur_1' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
           <span>Abajur 1</span>
         </button>
         <!-- Abajur 2 -->
-        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( '{toggle_state}'=='ligar' ? 'ligar_abajur_2' : 'desligar_abajar_2' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+        <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/' + ( '{toggle_state}'=='ligar' ? 'ligar_abajur_2' : 'desligar_abajur_2' ) + '/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
           <i class="fas fa-bed"></i>
           <span>Abajur 2</span>
         </button>
@@ -288,7 +281,7 @@ html_content = f"""<!DOCTYPE html>
       xhr.send();
     }}
 
-    // Atualizar data e hora no header
+    // Atualiza a data e hora no header a cada minuto
     function atualizarDataHora() {{
       var now = new Date();
       var options = {{ weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }};
