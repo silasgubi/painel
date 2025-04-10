@@ -10,7 +10,6 @@ from googleapiclient.discovery import build
 # 1. Configuração do Google Calendar via Service Account
 # ====================================
 SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
-# Cria o arquivo service_account.json com o conteúdo do segredo (definido no GitHub Secrets)
 credentials_json = os.environ['GOOGLE_CREDENTIALS']
 with open('service_account.json', 'w', encoding='utf-8') as f:
     f.write(credentials_json)
@@ -25,32 +24,48 @@ data_hoje = now.strftime("%d/%m/%Y")
 hora_hoje = now.strftime("%H:%M")
 dia_semana = now.strftime("%a.")
 
-# Use o seu ID do Google Calendar (geralmente seu email)
+# ID do seu Google Calendar
 calendar_id = "silasgubi@gmail.com"
 
-# Feriados (Brasil, província SP)
+# Biblioteca de feriados no Brasil, estado SP
 br_holidays = holidays.Brazil(prov='SP')
-feriado = br_holidays.get(now.date())
-feriado_text = f"Feriado: {feriado}" if feriado else "Sem feriado"
+feriado_hoje = br_holidays.get(now.date())
 
-# Clima em São Paulo (em Celsius, com ícone e texto em Português)
+# Verifica se HOJE é feriado
+if feriado_hoje:
+    feriado_text = f"Hoje é feriado: {feriado_hoje}"
+else:
+    # Se não é feriado hoje, buscar o próximo feriado no ano
+    proximos = sorted(d for d in br_holidays if d > now.date() and d.year == now.year)
+    if proximos:
+        proximo_feriado_data = proximos[0]
+        proximo_feriado_nome = br_holidays.get(proximo_feriado_data)
+        feriado_text = f"Próximo feriado: {proximo_feriado_nome} em {proximo_feriado_data.strftime('%d/%m/%Y')}"
+    else:
+        feriado_text = "Não há mais feriados este ano"
+
+# Clima em São Paulo + ícone + descrição PT + °C
 try:
-    # %C: ícone, %t: temperatura
-    clima = requests.get('https://wttr.in/Sao+Paulo?format=%C+%t&lang=pt&m').text
+    # São Paulo: %c -> ícone, %C -> texto, %t -> temperatura (°C com &m)
+    clima = requests.get("https://wttr.in/Sao+Paulo?format=São+Paulo:+%c+%C+%t&lang=pt&m").text
 except Exception:
     clima = "Clima indisponível"
 
-# Agenda do Google Calendar (eventos de hoje até o final do dia)
+# Agenda do Google Calendar: eventos de hoje até 23h59
 time_min = now.isoformat() + 'Z'
-end_of_day = datetime(now.year, now.month, now.day, 23, 59, 59)
-time_max = end_of_day.isoformat() + 'Z'
+time_max = datetime(now.year, now.month, now.day, 23, 59, 59).isoformat() + 'Z'
 events_result = service.events().list(
-    calendarId=calendar_id, timeMin=time_min,
-    timeMax=time_max, singleEvents=True, orderBy='startTime'
+    calendarId=calendar_id,
+    timeMin=time_min,
+    timeMax=time_max,
+    singleEvents=True,
+    orderBy='startTime'
 ).execute()
+
 events = events_result.get('items', [])
+
 if not events:
-    agenda_text = "Nenhum compromisso"
+    agenda_text = "Compromissos: Nenhum"
 else:
     agenda_lines = []
     for event in events:
@@ -61,9 +76,10 @@ else:
             event_time = start
         summary = event.get('summary', 'Sem título')
         agenda_lines.append(f"{event_time} - {summary}")
-    agenda_text = "<br>".join(agenda_lines)
+    # Exibir com "Compromissos:" antes
+    agenda_text = "Compromissos:<br>" + "<br>".join(agenda_lines)
 
-# Teste de velocidade da Internet com speedtest-cli
+# Teste de velocidade da Internet
 try:
     st = speedtest.Speedtest()
     st.get_best_server()
@@ -74,10 +90,8 @@ except Exception:
     internet_text = "Velocidade: Offline"
 
 # ====================================
-# 3. Gerar HTML com Layout Flat, Dark (modo terminal) e Botões Separados
+# 3. Gerar HTML - Layout Terminal + Ícones Locais
 # ====================================
-# Cada dispositivo terá dois botões: um para ligar e outro para desligar.
-# Os links utilizam sua IFTTT key "dyC3gXsJqHMp5uYOPt-s2W" e os ícones serão carregados de "assets/icones/"
 html_content = f"""<!DOCTYPE html>
 <html>
 <head>
@@ -135,10 +149,12 @@ html_content = f"""<!DOCTYPE html>
     .btn:active {{
       transform: scale(0.95);
     }}
+    /* Deixa ícones mais claros caso sejam pretos */
     .btn img {{
       width: 30px;
       height: 30px;
       margin-bottom: 3px;
+      filter: invert(100%) brightness(150%);
     }}
     .btn span {{
       font-size: 0.6em;
@@ -157,6 +173,14 @@ html_content = f"""<!DOCTYPE html>
       xhr.open("GET", url, true);
       xhr.send();
     }}
+
+    function atualizarDataHora() {{
+      var now = new Date();
+      var options = {{ weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }};
+      document.querySelector('header div:nth-child(2)').innerText = now.toLocaleDateString('pt-BR', options);
+    }}
+    setInterval(atualizarDataHora, 60000);
+    atualizarDataHora();
   </script>
 </head>
 <body>
@@ -164,6 +188,7 @@ html_content = f"""<!DOCTYPE html>
     <div style="opacity:0.7;">Quarto</div>
     <div style="opacity:0.7;">{dia_semana} {data_hoje}, {hora_hoje}</div>
 </header>
+
 <div class="container">
     <!-- Seção de Luzes -->
     <h3>Luzes</h3>
@@ -177,6 +202,7 @@ html_content = f"""<!DOCTYPE html>
          <img src="assets/icones/luz_off.svg" alt="Luz Quarto">
          <span>Quarto</span>
       </button>
+
       <!-- Abajur 1 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
@@ -186,6 +212,7 @@ html_content = f"""<!DOCTYPE html>
          <img src="assets/icones/abajur_off.svg" alt="Abajur 1">
          <span>Abajur</span>
       </button>
+
       <!-- Abajur 2 -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/abajur_on.svg" alt="Abajur 2">
@@ -195,6 +222,7 @@ html_content = f"""<!DOCTYPE html>
          <img src="assets/icones/abajur_off.svg" alt="Abajur 2">
          <span>Abajur</span>
       </button>
+
       <!-- Luz da Cama -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/cama_on.svg" alt="Cama">
@@ -205,6 +233,7 @@ html_content = f"""<!DOCTYPE html>
          <span>Cama</span>
       </button>
     </div>
+
     <!-- Seção de Dispositivos -->
     <h3>Dispositivos</h3>
     <div class="grid">
@@ -217,6 +246,7 @@ html_content = f"""<!DOCTYPE html>
          <img src="assets/icones/ar_off.svg" alt="Ar">
          <span>Ar</span>
       </button>
+
       <!-- Projetor -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/projetor_on.svg" alt="Projetor">
@@ -226,6 +256,7 @@ html_content = f"""<!DOCTYPE html>
          <img src="assets/icones/projetor_off.svg" alt="Projetor">
          <span>Projetor</span>
       </button>
+
       <!-- Tomada iPad -->
       <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
          <img src="assets/icones/usb_on.svg" alt="iPad">
@@ -236,6 +267,7 @@ html_content = f"""<!DOCTYPE html>
          <span>iPad</span>
       </button>
     </div>
+
     <!-- Seção de Cenas -->
     <h3>Cenas</h3>
     <div class="grid">
@@ -250,6 +282,7 @@ html_content = f"""<!DOCTYPE html>
          <span>Grafite</span>
       </button>
     </div>
+
     <!-- Seção de Sistema -->
     <h3>Sistema</h3>
     <div class="info">
@@ -259,23 +292,12 @@ html_content = f"""<!DOCTYPE html>
       <p>{feriado_text}</p>
     </div>
 </div>
-<script>
-function atualizarDataHora() {{
-    var now = new Date();
-    var options = {{ weekday: 'short', day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' }};
-    document.querySelector('header div:nth-child(2)').innerText = now.toLocaleDateString('pt-BR', options);
-}}
-atualizarDataHora();
-setInterval(atualizarDataHora, 60000);
-function chamarIFTTT(url) {{
-    var xhr = new XMLHttpRequest();
-    xhr.open("GET", url, true);
-    xhr.send();
-}}
-</script>
 </body>
 </html>
 """
 
+# ====================================
+# 4. Salvar o HTML
+# ====================================
 with open('index.html', 'w', encoding='utf-8') as f:
     f.write(html_content)
