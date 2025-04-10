@@ -1,118 +1,12 @@
-
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Painel</title>
     <meta charset="UTF-8">
-    <style>
-        body {
-            background-color: #121212;
-            color: white;
-            font-family: sans-serif;
-            text-align: center;
-            padding: 20px;
-        }
-        #clock {
-            font-size: 2em;
-            margin-bottom: 20px;
-        }
-        .botoes {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
-        .botao-par {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            width: 100%;
-        }
-        button {
-            font-size: 1em;
-            padding: 12px;
-            border-radius: 10px;
-            border: none;
-            background-color: #1e88e5;
-            color: white;
-            cursor: pointer;
-            flex: 1;
-            max-width: 300px;
-        }
-        .botao-cheio {
-            width: 90%;
-            max-width: 620px;
-        }
-        .info-widgets {
-            margin-top: 30px;
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-    </style>
+    <title>Quarto</title>
 </head>
-<body>
-    <div id="clock"></div>
-    <div class="botoes">
-        
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Luz do Quarto</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Luz do Quarto</button>
-    </div>
-    
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Abajur 1</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajar_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Abajur 1</button>
-    </div>
-    
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Abajur 2</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajar_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Abajur 2</button>
-    </div>
-    
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Ar-condicionado</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Ar-condicionado</button>
-    </div>
-    
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Luz da Cama</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Luz da Cama</button>
-    </div>
-    
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Tomada iPad</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Tomada iPad</button>
-    </div>
-    
-    <div class="botao-par">
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Ligar Projetor</button>
-        <button onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Desligar Projetor</button>
-    </div>
-    <button class="botao-cheio" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Cena Luzes Vermelhas</button>
-<button class="botao-cheio" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_grafite/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Cena Luzes Grafite</button>
-<button class="botao-cheio" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Cena Aconchegante</button>
-<button class="botao-cheio" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">Cena Vermelhas Banheiro</button>
-
-    </div>
-    <div class="info-widgets">
-        <img src="https://wttr.in/Sao+Paulo_0tqp_lang=pt.png" alt="Clima em São Paulo" width="300" height="250">
-        <iframe src="https://calendar.google.com/calendar/embed?src=silasgubi@gmail.com&ctz=America%2FSao_Paulo"
-                style="border: 0" width="300" height="300" frameborder="0" scrolling="no"></iframe>
-    </div>
-    <script>
-        function chamarIFTTT(url) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("GET", url, true);
-            xhr.send();
-        }
-        function updateClock() {
-            var now = new Date();
-            document.getElementById('clock').innerHTML = now.toLocaleTimeString();
-        }
-        setInterval(updateClock, 1000);
-        updateClock();
-    </script>
+<body style="background-color:#000; color:#fff; text-align:center; padding:50px; font-family:sans-serif;">
+    <h1>Painel Quarto</h1>
+    <p>Primeira versão do painel.<br>
+    Atualização automática a cada hora.</p>
 </body>
 </html>
