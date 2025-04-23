@@ -93,7 +93,7 @@
     }
     .btn span {
       font-size: 0.75em; 
-      color: #39FF14; 
+      color: #333; 
       font-weight: bold;
       margin-top: -3px;
     }
@@ -112,7 +112,9 @@
   <script>
     function chamarWebHook(url) {
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // se precisar enviar payload, coloque um JSON aqui, senão envie vazio
       xhr.send();
     }
     function atualizarDataHora() {
@@ -128,7 +130,7 @@
 <div class="outer">
   <header>
     <div class="title">Quarto</div>
-    <div class="dateinfo">Wed. 23/04/2025, 12:25</div>
+    <div class="dateinfo">Wed. 23/04/2025, 12:39</div>
   </header>
 
   <!-- SEÇÃO LUZES -->
@@ -232,7 +234,7 @@
     <div class="info">
       <p>São Paulo: 🌫  Neblina +17°C</p>
       <p>Compromissos:<br>09:10 - Hidroginástica Palmeiras<br>15:30 - Dra Ana Maria </p>
-      <p>Velocidade da Internet: 1394 ↓ / 1227 ↑</p>
+      <p>Velocidade da Internet: 1597 ↓ / 311 ↑</p>
       <p>Próximo feriado: Worker's Day em 01/05/2025</p>
     </div>
   </div>
