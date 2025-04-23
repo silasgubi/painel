@@ -199,7 +199,9 @@ html_content = f"""<!DOCTYPE html>
   <script>
     function chamarWebHook(url) {{
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
+      xhr.open("POST", url, true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      // se precisar enviar payload, coloque um JSON aqui, senão envie vazio
       xhr.send();
     }}
     function atualizarDataHora() {{
