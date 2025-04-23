@@ -13,7 +13,7 @@
       justify-content: center;
     }
     .outer {
-      border: 2px solid #0f0;
+      border: 2px solid #39FF14; /* borda externa */
       max-width: 700px;
       width: 100%;
       margin: 10px;
@@ -27,7 +27,7 @@
       align-items: center;
       font-size: 0.9em;
       margin-bottom: 5px;
-      border-bottom: 1px dashed #333;
+      border-bottom: 1px dashed #39FF14; /* divisor */
       padding-bottom: 5px;
     }
     header .title {
@@ -39,7 +39,7 @@
       opacity: 0.9;
     }
     .section {
-      border: 1px solid #333;
+      border: 1px solid #39FF14; /* bordas das seções */
       padding: 10px;
       margin-top: 10px;
     }
@@ -48,7 +48,7 @@
       text-transform: uppercase;
       font-size: 1em;
       letter-spacing: 1px;
-      border-bottom: 1px dashed #444;
+      border-bottom: 1px dashed #39FF14; /* título da seção */
       padding-bottom: 5px;
       opacity: 0.8;
     }
@@ -59,7 +59,7 @@
     }
     .btn {
       background: #222;
-      border: 1px solid #444;
+      border: 1px solid #39FF14; * borda dos botões */
       border-radius: 5px;
       width: 60px;
       height: 60px;
@@ -80,7 +80,16 @@
       width: 30px;
       height: 30px;
       margin-bottom: 2px;
-      filter: invert(100%) brightness(150%);
+      /* filtro para deixar o ícone em verde e com leve glow */
+      filter:
+        drop-shadow(0 0 4px #39FF14)
+        brightness(0)
+        saturate(100%)
+        invert(100%)
+        sepia(100%)
+        hue-rotate(80deg)
+        brightness(1.2)
+        contrast(1.1);
     }
     .btn span {
       font-size: 0.75em; 
@@ -90,7 +99,7 @@
     }
     .info {
       background: #222;
-      border: 1px solid #444;
+      border: 1px solid #39FF14; /* borda do box de clima/agenda */
       padding: 10px;
       border-radius: 5px;
       margin-top: 10px;
@@ -119,7 +128,7 @@
 <div class="outer">
   <header>
     <div class="title">Quarto</div>
-    <div class="dateinfo">Wed. 23/04/2025, 03:34</div>
+    <div class="dateinfo">Wed. 23/04/2025, 03:56</div>
   </header>
 
   <!-- SEÇÃO LUZES -->
@@ -221,9 +230,9 @@
   <div class="section">
     <h3>Sistema</h3>
     <div class="info">
-      <p>São Paulo: ⛅️  Parcialmente nublado +18°C</p>
+      <p>São Paulo: ⛅️  Parcialmente nublado +17°C</p>
       <p>Compromissos:<br>09:10 - Hidroginástica Palmeiras<br>15:30 - Dra Ana Maria </p>
-      <p>Velocidade da Internet: Offline</p>
+      <p>Velocidade da Internet: 1886 ↓ / 1725 ↑</p>
       <p>Próximo feriado: Worker's Day em 01/05/2025</p>
     </div>
   </div>
