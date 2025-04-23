@@ -146,7 +146,7 @@ html_content = f"""<!DOCTYPE html>
     }}
     .btn {{
       background: #222;
-      border: 1px solid #39FF14; * borda dos botões */
+      border: 1px solid #39FF14; /* borda dos botões */
       border-radius: 5px;
       width: 60px;
       height: 60px;
@@ -180,7 +180,7 @@ html_content = f"""<!DOCTYPE html>
     }}
     .btn span {{
       font-size: 0.75em; 
-      color: #ccc; 
+      color: #39FF14; 
       font-weight: bold;
       margin-top: -3px;
     }}
