@@ -100,7 +100,7 @@ html_content = f"""<!DOCTYPE html>
       justify-content: center;
     }}
     .outer {{
-      border: 2px solid #444;
+      border: 2px solid #0f0;
       max-width: 700px;
       width: 100%;
       margin: 10px;
@@ -240,13 +240,13 @@ html_content = f"""<!DOCTYPE html>
       <!-- Luz do Banheiro -->
       <button class="btn" onclick="chamaWebHook('http://homeassistant.local:8123/api/webhook/-xX0MHHD3C5EWUCLZVDd-pN6x')">
         <img src="assets/icones/banheiro_on.svg" alt="Luz Banheiro">
-        <span>Cama</span>
+        <span>Banheiro</span>
       </button>
       
       <!-- Luz Noturna -->
       <button class="btn" onclick="chamaWebHook('http://homeassistant.local:8123/api/webhook/-ZNDib6M8xbHnRgpwpELIINvl')">
         <img src="assets/icones/luz_on.svg" alt="Luz Noturna">
-        <span>Cama</span>
+        <span>Noturna</span>
       </button>
       
     </div>
