@@ -225,7 +225,7 @@ html_content = f"""<!DOCTYPE html>
     <h3>Luzes</h3>
     <div class="grid">
       <!-- Luz do Quarto -->
-      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-CypOVrETUPzU3j597Zv_Zt5A')">
+      <button class="btn" onclick="chamarWebHook('https://tpplz8oygoqmaagdruizwe214e6bl6cs.ui.nabu.casa/api/webhook/-CypOVrETUPzU3j597Zv_Zt5A')">
         <img src="assets/icones/luz_on.svg" alt="Luz Quarto">
         <span>Quarto</span>
       </button>
