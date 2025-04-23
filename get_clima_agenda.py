@@ -180,7 +180,7 @@ html_content = f"""<!DOCTYPE html>
     }}
     .btn span {{
       font-size: 0.75em; 
-      color: #39FF14; 
+      color: #333; 
       font-weight: bold;
       margin-top: -3px;
     }}
