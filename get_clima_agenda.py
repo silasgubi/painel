@@ -78,9 +78,9 @@ try:
     st.get_best_server()
     down = int(st.download() / 1_000_000)
     up = int(st.upload() / 1_000_000)
-    internet_text = f"Velocidade: {down} ↓ / {up} ↑"
+    internet_text = f"Velocidade da Internet: {down} ↓ / {up} ↑"
 except Exception:
-    internet_text = "Velocidade: Offline"
+    internet_text = "Velocidade da Internet: Offline"
 
 # ====================================
 # 3. Gerar HTML com Layout Flat, Dark (modo terminal) e Botões Separados
@@ -94,7 +94,7 @@ html_content = f"""<!DOCTYPE html>
     body {{
       margin: 0; 
       background-color: #000;
-      color: #fff;
+      color: #0f0;
       font-family: 'Courier New', Courier, monospace;
       display: flex;
       justify-content: center;
@@ -188,7 +188,7 @@ html_content = f"""<!DOCTYPE html>
     }}
   </style>
   <script>
-    function chamarIFTTT(url) {{
+    function chamarWebHook(url) {{
       var xhr = new XMLHttpRequest();
       xhr.open("GET", url, true);
       xhr.send();
@@ -214,44 +214,41 @@ html_content = f"""<!DOCTYPE html>
     <h3>Luzes</h3>
     <div class="grid">
       <!-- Luz do Quarto -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/luz_on.svg" alt="Luz On">
+      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-CypOVrETUPzU3j597Zv_Zt5A')">
+        <img src="assets/icones/luz_on.svg" alt="Luz Quarto">
         <span>Quarto</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_quarto/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/luz_off.svg" alt="Luz Off">
-        <span>Quarto</span>
-      </button>
-
+      
       <!-- Abajur 1 -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/abajur_on.svg" alt="Abajur On">
+      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-MFVOA3AtnRp1jXwKo1OC9OHG')">
+        <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
         <span>Abajur1</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_1/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/abajur_off.svg" alt="Abajur Off">
-        <span>Abajur1</span>
-      </button>
-
+      
       <!-- Abajur 2 -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/abajur_on.svg" alt="Abajur On">
+      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-ABK97nz2L99Ii7UEbruta9Qv')">
+        <img src="assets/icones/abajur_on.svg" alt="Abajur 2">
         <span>Abajur2</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_abajur_2/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/abajur_off.svg" alt="Abajur Off">
-        <span>Abajur2</span>
-      </button>
-
+      
       <!-- Luz da Cama -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/cama_on.svg" alt="Cama On">
+      <button class="btn" onclick="chamaWebHook('http://homeassistant.local:8123/api/webhook/-XWBgJ0fL2a3Qi1jDCOXSUccU')">
+        <img src="assets/icones/cama_on.svg" alt="Luz Cama">
         <span>Cama</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_luz_cama/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/cama_off.svg" alt="Cama Off">
+      
+      <!-- Luz do Banheiro -->
+      <button class="btn" onclick="chamaWebHook('http://homeassistant.local:8123/api/webhook/-xX0MHHD3C5EWUCLZVDd-pN6x')">
+        <img src="assets/icones/banheiro_on.svg" alt="Luz Banheiro">
         <span>Cama</span>
       </button>
+      
+      <!-- Luz Noturna -->
+      <button class="btn" onclick="chamaWebHook('http://homeassistant.local:8123/api/webhook/-ZNDib6M8xbHnRgpwpELIINvl')">
+        <img src="assets/icones/luz_on.svg" alt="Luz Noturna">
+        <span>Cama</span>
+      </button>
+      
     </div>
   </div>
 
@@ -260,34 +257,23 @@ html_content = f"""<!DOCTYPE html>
     <h3>Dispositivos</h3>
     <div class="grid">
       <!-- Ar-condicionado -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+      <button class="btn" onclick="chamarWebHook('https://maker.ifttt.com/trigger/ligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
         <img src="assets/icones/ar_on.svg" alt="Ar On">
         <span>Ar</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_ar/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/ar_off.svg" alt="Ar Off">
-        <span>Ar</span>
-      </button>
-
+      
       <!-- Projetor -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/projetor_on.svg" alt="Projetor On">
+      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-oLWNzYt_bn3GE3GieCd50F6h')">
+        <img src="assets/icones/projetor_on.svg" alt="USB Projetor">
         <span>Proj</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_projetor/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/projetor_off.svg" alt="Projetor Off">
-        <span>Proj</span>
-      </button>
-
+      
       <!-- Tomada iPad -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/ligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/usb_on.svg" alt="iPad On">
+      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-oLWNzYt_bn3GE3GieCd50F6h')">
+        <img src="assets/icones/usb_on.svg" alt="USB iPad">
         <span>iPad</span>
       </button>
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/desligar_tomada_ipad/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/usb_off.svg" alt="iPad Off">
-        <span>iPad</span>
-      </button>
+      
     </div>
   </div>
 
@@ -296,8 +282,8 @@ html_content = f"""<!DOCTYPE html>
     <h3>Cenas</h3>
     <div class="grid">
       <!-- Cena Luzes Vermelhas -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
-        <img src="assets/icones/luzes_vermelhas_on.svg" alt="Vermelhas">
+      <button class="btn" onclick="chamarIFTTT('http://homeassistant.local:8123/api/webhook/-pKBlAuGBMXwVLP6QE_5PmKPU')">
+        <img src="assets/icones/luzes_vermelhas_on.svg" alt="Luzes Vermelhas">
         <span>Vermelhas</span>
       </button>
       <!-- Cena Luzes Grafite -->
@@ -306,12 +292,12 @@ html_content = f"""<!DOCTYPE html>
         <span>Grafite</span>
       </button>
       <!-- Cena Aconchegante -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+      <button class="btn" onclick="chamarWebHook('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
         <img src="assets/icones/calmo_on.svg" alt="Aconchegante">
         <span>Aconchegante</span>
       </button>
       <!-- Cena Luzes Vermelhas Banheiro -->
-      <button class="btn" onclick="chamarIFTTT('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
+      <button class="btn" onclick="chamarWebHook('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
         <img src="assets/icones/banheiro_on.svg" alt="Banheiro">
         <span>Banheiro</span>
       </button>
