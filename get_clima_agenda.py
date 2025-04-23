@@ -100,7 +100,7 @@ html_content = f"""<!DOCTYPE html>
       justify-content: center;
     }}
     .outer {{
-      border: 2px solid #0f0;
+      border: 2px solid #39FF14; /* borda externa */
       max-width: 700px;
       width: 100%;
       margin: 10px;
@@ -114,7 +114,7 @@ html_content = f"""<!DOCTYPE html>
       align-items: center;
       font-size: 0.9em;
       margin-bottom: 5px;
-      border-bottom: 1px dashed #333;
+      border-bottom: 1px dashed #39FF14; /* divisor */
       padding-bottom: 5px;
     }}
     header .title {{
@@ -126,7 +126,7 @@ html_content = f"""<!DOCTYPE html>
       opacity: 0.9;
     }}
     .section {{
-      border: 1px solid #333;
+      border: 1px solid #39FF14; /* bordas das seções */
       padding: 10px;
       margin-top: 10px;
     }}
@@ -135,7 +135,7 @@ html_content = f"""<!DOCTYPE html>
       text-transform: uppercase;
       font-size: 1em;
       letter-spacing: 1px;
-      border-bottom: 1px dashed #444;
+      border-bottom: 1px dashed #39FF14; /* título da seção */
       padding-bottom: 5px;
       opacity: 0.8;
     }}
@@ -146,7 +146,7 @@ html_content = f"""<!DOCTYPE html>
     }}
     .btn {{
       background: #222;
-      border: 1px solid #444;
+      border: 1px solid #39FF14; * borda dos botões */
       border-radius: 5px;
       width: 60px;
       height: 60px;
@@ -167,7 +167,16 @@ html_content = f"""<!DOCTYPE html>
       width: 30px;
       height: 30px;
       margin-bottom: 2px;
-      filter: invert(100%) brightness(150%);
+      /* filtro para deixar o ícone em verde e com leve glow */
+      filter:
+        drop-shadow(0 0 4px #39FF14)
+        brightness(0)
+        saturate(100%)
+        invert(100%)
+        sepia(100%)
+        hue-rotate(80deg)
+        brightness(1.2)
+        contrast(1.1);
     }}
     .btn span {{
       font-size: 0.75em; 
@@ -177,7 +186,7 @@ html_content = f"""<!DOCTYPE html>
     }}
     .info {{
       background: #222;
-      border: 1px solid #444;
+      border: 1px solid #39FF14; /* borda do box de clima/agenda */
       padding: 10px;
       border-radius: 5px;
       margin-top: 10px;
