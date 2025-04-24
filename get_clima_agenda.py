@@ -199,7 +199,7 @@ html_content = f"""<!DOCTYPE html>
   <script>
     function chamarWebHook(url) {{
       var xhr = new XMLHttpRequest();
-      xhr.open("GET", url, true);
+      xhr.open("HEAD", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
       // se precisar enviar payload, coloque um JSON aqui, senão envie vazio
       xhr.send();
@@ -237,7 +237,7 @@ html_content = f"""<!DOCTYPE html>
       </button>
       
       <!-- Abajur 2 -->
-      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-ABK97nz2L99Ii7UEbruta9Qv')">
+      <button class="btn" onclick="chamarWebHook('https://tpplz8oygoqmaagdruizwe214e6bl6cs.ui.nabu.casa/api/webhook/-ABK97nz2L99Ii7UEbruta9Qv')">
         <img src="assets/icones/abajur_on.svg" alt="Abajur 2">
         <span>Abajur2</span>
       </button>
@@ -276,7 +276,7 @@ html_content = f"""<!DOCTYPE html>
       <!-- Projetor -->
       <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-oLWNzYt_bn3GE3GieCd50F6h')">
         <img src="assets/icones/projetor_on.svg" alt="USB Projetor">
-        <span>Proj</span>
+        <span>Projetor</span>
       </button>
       
       <!-- Tomada iPad -->
@@ -305,7 +305,7 @@ html_content = f"""<!DOCTYPE html>
       <!-- Cena Aconchegante -->
       <button class="btn" onclick="chamarWebHook('https://maker.ifttt.com/trigger/cena_aconchegante/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
         <img src="assets/icones/calmo_on.svg" alt="Aconchegante">
-        <span>Aconchegante</span>
+        <span>zzZZzz</span>
       </button>
       <!-- Cena Luzes Vermelhas Banheiro -->
       <button class="btn" onclick="chamarWebHook('https://maker.ifttt.com/trigger/cena_luzes_vermelhas_banheiro/with/key/dyC3gXsJqHMp5uYOPt-s2W')">
