@@ -112,7 +112,7 @@
   <script>
     function chamarWebHook(url) {
       var xhr = new XMLHttpRequest();
-      xhr.open("POST", url, true);
+      xhr.open("GET", url, true);
       xhr.setRequestHeader("Content-Type", "application/json");
       // se precisar enviar payload, coloque um JSON aqui, senão envie vazio
       xhr.send();
@@ -130,7 +130,7 @@
 <div class="outer">
   <header>
     <div class="title">Quarto</div>
-    <div class="dateinfo">Thu. 24/04/2025, 03:15</div>
+    <div class="dateinfo">Thu. 24/04/2025, 03:33</div>
   </header>
 
   <!-- SEÇÃO LUZES -->
@@ -144,7 +144,7 @@
       </button>
       
       <!-- Abajur 1 -->
-      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-MFVOA3AtnRp1jXwKo1OC9OHG')">
+      <button class="btn" onclick="chamarWebHook('https://tpplz8oygoqmaagdruizwe214e6bl6cs.ui.nabu.casa/api/webhook/-MFVOA3AtnRp1jXwKo1OC9OHG')">
         <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
         <span>Abajur1</span>
       </button>
@@ -234,7 +234,7 @@
     <div class="info">
       <p>São Paulo: ☁️   Encoberto +19°C</p>
       <p>Compromissos:<br>09:15 - Silvana Ginástica Palmeiras </p>
-      <p>Velocidade da Internet: 1928 ↓ / 1844 ↑</p>
+      <p>Velocidade da Internet: Offline</p>
       <p>Próximo feriado: Worker's Day em 01/05/2025</p>
     </div>
   </div>
