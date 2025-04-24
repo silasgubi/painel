@@ -231,7 +231,7 @@ html_content = f"""<!DOCTYPE html>
       </button>
       
       <!-- Abajur 1 -->
-      <button class="btn" onclick="chamarWebHook('http://homeassistant.local:8123/api/webhook/-MFVOA3AtnRp1jXwKo1OC9OHG')">
+      <button class="btn" onclick="chamarWebHook('https://tpplz8oygoqmaagdruizwe214e6bl6cs.ui.nabu.casa/api/webhook/-MFVOA3AtnRp1jXwKo1OC9OHG')">
         <img src="assets/icones/abajur_on.svg" alt="Abajur 1">
         <span>Abajur1</span>
       </button>
